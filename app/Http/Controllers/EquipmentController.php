@@ -195,4 +195,27 @@ class EquipmentController extends Controller
 
         return response()->json(['message' => 'ลบข้อมูลสำเร็จ'], 200);
     }
+
+    public function frmAddPmNew(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'hw_id' => 'required|integer|exists:equipment,hw_id',
+            'groups_id' => 'required|integer|exists:groups,groups_id',
+        ]);
+
+        $validated = $validator->validated();
+        $group = Groups::find($validated['groups_id']);
+        if (!$group) {
+            return response()->json(['message' => 'ไม่พบข้อมูลกลุ่มอุปกรณ์'], 404);
+        }
+
+        $schedule = new MaintenanceSchedule();
+        $schedule->hw_id = $validated['hw_id'];
+        $schedule->cycle_month = $group->groups_cycle_month;
+        $schedule->planned_date = now()->addMonths($group->groups_cycle_month);
+        $schedule->status = 1;
+        $schedule->save();
+
+        return response()->json(['message' => 'บันทึกข้อมูลสำเร็จ'], 200);
+    }
 }

@@ -12,6 +12,7 @@ use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\MaintenanceScheduleController;
 use App\Http\Controllers\MaintenanceStaffController;
 use App\Http\Controllers\PmRecordController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ZoneController;
 use Illuminate\Support\Facades\DB;
 // Route::get('/', function () {
@@ -65,8 +66,7 @@ Route::get('/getModels/{brandId}', [EquipmentController::class, 'getModels']);
 Route::post('frmAddEquipment', [EquipmentController::class, 'frmAddEquipment'])->name('frmAddEquipment');
 Route::post('frmEditEquipment', [EquipmentController::class, 'frmEditEquipment'])->name('frmEditEquipment');
 Route::post('frmDeleteHW', [EquipmentController::class, 'frmDeleteHW'])->name('frmDeleteHW');
-
-Route::get('pm-record/{id}', [PmRecordController::class, 'PmRecord'])->name('PmRecord');
+Route::post('frmAddPmNew', [EquipmentController::class, 'frmAddPmNew'])->name('frmAddPmNew');
 
 Route::get('maintenance-schedule', [MaintenanceScheduleController::class, 'MaintenanceSchedule'])->name('MaintenanceSchedule');
 Route::post('frmEditDate', [MaintenanceScheduleController::class, 'frmEditDate'])->name('frmEditDate');
@@ -74,3 +74,7 @@ Route::post('frmDeletePM', [MaintenanceScheduleController::class, 'frmDeletePM']
 
 Route::get('actual-pm', [ActualPmController::class, 'ActualPm'])->name('ActualPm');
 Route::post('frmAddPM', [ActualPmController::class, 'frmAddPM'])->name('frmAddPM');
+
+Route::get('report', [ReportController::class, 'report'])->name('report');
+Route::get('/report/export/excel', [ReportController::class, 'exportExcel'])->name('report.export.excel');
+Route::get('/report/export/pdf', [ReportController::class, 'exportPdf'])->name('report.export.pdf');

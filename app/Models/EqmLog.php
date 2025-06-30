@@ -13,7 +13,7 @@ class EqmLog extends Model
         'pm_id',
         'hw_id',
         'maintenance_id',
-        'created_at',
+        'created_by',
         'actual_date',
         'status',
         'detail',

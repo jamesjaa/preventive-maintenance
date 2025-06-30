@@ -9,7 +9,7 @@ class User extends Authenticatable
     public $timestamps = false; // ไม่มี created_at/updated_at
 
     protected $table = 'users'; // ตาราง users
-
+    protected $primaryKey = 'id';
     protected $fillable = [
         'name',
         'fullname',

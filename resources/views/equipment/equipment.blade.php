@@ -259,7 +259,23 @@
                                 });
                             },
                             error: function(xhr) {
-                                handleAjaxError(xhr);
+                                let errorText = 'ไม่สามารถลบข้อมูลได้';
+
+                                if (xhr.responseText && xhr.responseText.includes(
+                                        'Integrity constraint violation')) {
+                                    errorText =
+                                        'ข้อมูลนี้กำลังถูกใช้งานอยู่ ไม่สามารถลบได้';
+                                } else if (xhr.responseJSON && xhr.responseJSON
+                                    .message) {
+                                    errorText = xhr.responseJSON.message;
+                                }
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'เกิดข้อผิดพลาด!',
+                                    text: errorText,
+                                    showConfirmButton: true
+                                });
                             }
                         });
                     }
@@ -353,6 +369,29 @@
                     });
                 }
             });
+            $(document).on('submit', 'form[id^="frm-add-pm-new"]', function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: "{{ route('frmAddPmNew') }}",
+                    type: "POST",
+                    data: formData,
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'แจ้งเตือน!',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    },
+                    error: function(xhr) {
+                        handleAjaxError(xhr);
+                    }
+                });
+            });
         });
     </script>
     <div class="card info-card sales-card p-4">
@@ -373,7 +412,7 @@
                         <th scope="col">โมเดล</th>
                         <th scope="col">ชื่อของอุปกรณ์</th>
                         <th scope="col">โซน</th>
-                        <th scope="col">ประวัติ</th>
+                        <th scope="col">PM</th>
                         <th scope="col">แก้ไข</th>
                         <th scope="col">ลบ</th>
                     </tr>
@@ -396,9 +435,40 @@
                             <td>{{ $equ->hw_name }}</td>
                             <td class="text-center">{{ $equ->zone_name }}</td>
                             <td class="text-center">
-                                <a type="button" class="btn btn-primary btn-sm"
-                                    href="{{ route('PmRecord', ['id' => $equ->hw_id]) }}"><i
-                                        class="bi bi-card-checklist"></i></a>
+                                <a type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#addPmNew{{ $i }}">
+                                    <i class="bi bi-plus-lg"></i>
+                                </a>
+
+                                <div class="modal fade" id="addPmNew{{ $i }}" data-bs-backdrop="static"
+                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <form id="frm-add-pm-new{{ $i }}">
+                                            @csrf
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5">สร้างรอบการเข้าซ่อมบำรุง</h1>
+                                                    <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p><b>ท่านสามารถสร้างรอบการเข้าซ่อมบำรุ่งใหม่ได้</b></p>
+                                                    <p><b>ในกรณีที่ลบแผนการซ่อมบำรุงเดิมออก</b></p>
+                                                    <h4>ยืนยันการสร้างแผนหรือไม่ ?</h4>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="hidden" name="hw_id" value="{{ $equ->hw_id }}">
+                                                    <input type="hidden" name="groups_id"
+                                                        value="{{ $equ->groups_id }}">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">ยกเลิก</button>
+                                                    <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </td>
                             <td class="text-center">
                                 <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"

@@ -32,6 +32,7 @@ class LoginController extends Controller
             Session::put('user_id', $check->id);
             Session::put('user_name', $check->name);
             Session::put('user_fullname', $check->fullname);
+            Session::save();
             return response()->json(['message' => "เข้าสู่ระบบสำเร็จ"], 200);
         } else {
             return response()->json(['message' => "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"], 401);

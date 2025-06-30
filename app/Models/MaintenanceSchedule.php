@@ -15,7 +15,8 @@ class MaintenanceSchedule extends Model
     protected $fillable = [
         'hw_id',
         'planned_date',
-        'cycle_month'
+        'cycle_month',
+        'status'
     ];
 
     // ความสัมพันธ์ตัวอย่าง (ถ้าอยากเชื่อมกับ Equipment)

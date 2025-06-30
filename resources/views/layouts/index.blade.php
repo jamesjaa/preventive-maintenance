@@ -115,6 +115,13 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ route('report') }}">
+                    <i class="bi bi-card-list"></i>
+                    <span>รายงานการซ่อมบำรุง</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('groups') }}">
                     <i class="bi bi-box-arrow-in-right"></i>
                     <span>จัดการกลุ่มอุปกรณ์</span>
@@ -135,12 +142,6 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="pages-register.html">
-                    <i class="bi bi-card-list"></i>
-                    <span>รายงานการซ่อมบำรุง</span>
-                </a>
-            </li>
 
         </ul>
 

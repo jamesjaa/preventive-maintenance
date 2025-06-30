@@ -86,11 +86,11 @@
                             <div class="modal fade" id="addDetailPm" data-bs-backdrop="static" data-bs-keyboard="false"
                                 tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog">
-                                    <form id="frm-complete-pm-{{ $mt->pm_id }}">
+                                    <form id="frm-actual-pm-{{ $mt->pm_id }}">
                                         @csrf
-                                        <input type="hidden" name="pm_id" value="{{ $mt->pm_id }}">
+                                        <input type="hidden" name="schedule_id" value="{{ $mt->pm_id }}">
                                         <input type="hidden" name="hw_id" value="{{ $mt->hw_id }}">
-                                        <input type="hidden" name="maintenance_id" value="1"> <!-- สมมุติ 1=PM -->
+                                        <input type="hidden" name="cycle_month" value="{{ $mt->groups_cycle_month }}">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">บันทึกการทำ PM:
@@ -103,13 +103,43 @@
                                                     <input type="date" class="form-control" name="actual_date" required>
                                                 </div>
                                                 <div class="mb-3">
+                                                    <label class="form-label">สถานะการดำเนินการ</label>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="status"
+                                                            id="statusSuccess" value="1" checked>
+                                                        <label class="form-check-label" for="statusSuccess">
+                                                            สำเร็จ (ซ่อมได้)
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="status"
+                                                            id="statusFailed" value="2">
+                                                        <label class="form-check-label" for="statusFailed">
+                                                            ยกเลิก (ซ่อมไม่ได้)
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
                                                     <label class="form-label">รายละเอียด</label>
                                                     <textarea class="form-control" name="detail" rows="2"></textarea>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label class="form-label">ค่าใช้จ่าย (บาท)</label>
-                                                    <input type="number" class="form-control" name="cost" min="0"
-                                                        value="0">
+                                                    <input type="number" class="form-control" name="cost"
+                                                        min="0" value="{{ $mt->groups_cost }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">ผู้ซ่อมบำรุง</label>
+                                                    <select class="form-select" id="maintenance_id" name="maintenance_id"
+                                                        required>
+                                                        <option selected value="">เลือกผู้ซ่อมบำรุง...
+                                                        </option>
+                                                        @foreach ($staff as $stf)
+                                                            <option value="{{ $stf->maintenance_id }}">
+                                                                {{ $stf->maintenance_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -121,39 +151,6 @@
                                     </form>
                                 </div>
                             </div>
-                            <script>
-                                $(document).ready(function() {
-                                    $("form[id^='frm-complete-pm-']").submit(function(e) {
-                                        e.preventDefault();
-                                        var form = $(this);
-                                        var formData = form.serialize();
-
-                                        $.ajax({
-                                            url: "{{ route('frmAddPM') }}",
-                                            type: "POST",
-                                            data: formData,
-                                            success: function(response) {
-                                                Swal.fire({
-                                                    icon: 'success',
-                                                    title: 'บันทึกสำเร็จ!',
-                                                    text: response.message,
-                                                    timer: 1500,
-                                                    showConfirmButton: false
-                                                }).then(() => {
-                                                    window.location.reload();
-                                                });
-                                            },
-                                            error: function(xhr) {
-                                                Swal.fire({
-                                                    icon: 'error',
-                                                    title: 'เกิดข้อผิดพลาด',
-                                                    text: xhr.responseJSON.message || 'ไม่สามารถบันทึกได้'
-                                                });
-                                            }
-                                        });
-                                    });
-                                });
-                            </script>
                         </tr>
                     @endforeach
                 </tbody>
@@ -161,4 +158,38 @@
         </div>
         {{ $maintenance->links('pagination::bootstrap-5') }}
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $("form[id^='frm-actual-pm-']").submit(function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var formData = form.serialize();
+
+                $.ajax({
+                    url: "{{ route('frmAddPM') }}",
+                    type: "POST",
+                    data: formData,
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'บันทึกสำเร็จ!',
+                            text: response.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด',
+                            text: xhr.responseJSON.message || 'ไม่สามารถบันทึกได้'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
