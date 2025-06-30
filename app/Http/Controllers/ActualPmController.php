@@ -34,21 +34,21 @@ class ActualPmController extends Controller
         return view('actual_pm.actual_pm', ['maintenance' => $maintenance]);
     }
 
-    // public function completePlan(Request $request)
-    // {
-    //     $schedule = MaintenanceSchedule::find($request->schedule_id);
-    //     $schedule->status = 'completed';
-    //     $schedule->actual_date = $request->actual_date;
-    //     $schedule->save();
+    public function frmAddPM(Request $request)
+    {
+        // $schedule = MaintenanceSchedule::find($request->schedule_id);
+        // $schedule->status = 'completed';
+        // $schedule->actual_date = $request->actual_date;
+        // $schedule->save();
 
-    //     // สร้างแผนใหม่ถ้าต้องการ
-    //     MaintenanceSchedule::create([
-    //         'equipment_id' => $schedule->equipment_id,
-    //         'planned_date' => Carbon::parse($request->actual_date)->addMonths(6),
-    //         'status' => 'pending',
-    //         // ...อื่นๆ
-    //     ]);
+        // // สร้างแผนใหม่ถ้าต้องการ
+        // MaintenanceSchedule::create([
+        //     'equipment_id' => $schedule->equipment_id,
+        //     'planned_date' => Carbon::parse($request->actual_date)->addMonths(6),
+        //     'status' => 'pending',
+        //     // ...อื่นๆ
+        // ]);
 
-    //     return response()->json(['message' => 'บันทึกและสร้างแผนใหม่แล้ว']);
-    // }
+        // return response()->json(['message' => 'บันทึกและสร้างแผนใหม่แล้ว']);
+    }
 }

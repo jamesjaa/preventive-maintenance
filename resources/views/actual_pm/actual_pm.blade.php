@@ -121,6 +121,39 @@
                                     </form>
                                 </div>
                             </div>
+                            <script>
+                                $(document).ready(function() {
+                                    $("form[id^='frm-complete-pm-']").submit(function(e) {
+                                        e.preventDefault();
+                                        var form = $(this);
+                                        var formData = form.serialize();
+
+                                        $.ajax({
+                                            url: "{{ route('frmAddPM') }}",
+                                            type: "POST",
+                                            data: formData,
+                                            success: function(response) {
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'บันทึกสำเร็จ!',
+                                                    text: response.message,
+                                                    timer: 1500,
+                                                    showConfirmButton: false
+                                                }).then(() => {
+                                                    window.location.reload();
+                                                });
+                                            },
+                                            error: function(xhr) {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'เกิดข้อผิดพลาด',
+                                                    text: xhr.responseJSON.message || 'ไม่สามารถบันทึกได้'
+                                                });
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
                         </tr>
                     @endforeach
                 </tbody>

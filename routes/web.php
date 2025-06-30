@@ -73,3 +73,4 @@ Route::post('frmEditDate', [MaintenanceScheduleController::class, 'frmEditDate']
 Route::post('frmDeletePM', [MaintenanceScheduleController::class, 'frmDeletePM'])->name('frmDeletePM');
 
 Route::get('actual-pm', [ActualPmController::class, 'ActualPm'])->name('ActualPm');
+Route::post('frmAddPM', [ActualPmController::class, 'frmAddPM'])->name('frmAddPM');
