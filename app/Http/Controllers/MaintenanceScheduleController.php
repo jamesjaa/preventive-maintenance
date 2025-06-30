@@ -27,8 +27,29 @@ class MaintenanceScheduleController extends Controller
                 'model.model_name',
                 'zone.zone_name'
             )
-            ->get();
+            ->where('status', 1)
+            ->paginate(10);
         return view('maintenance_schedule.maintenance_schedule', ['maintenance' => $maintenance]);
+    }
+
+    public function frmEditDate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'pm_id' => 'required|numeric',
+            'edit_date' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated();
+
+        $updated = MaintenanceSchedule::where('pm_id', $validated['pm_id'])->update([
+            'planned_date' => $validated['edit_date'],
+        ]);
+
+        return response()->json(['message' => 'บันทึกข้อมูลสำเร็จ'], 200);
     }
 
     public function frmDeletePM(Request $request)

@@ -15,6 +15,11 @@
     <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
         rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
@@ -42,7 +47,7 @@
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a href="index.html" class="logo d-flex align-items-center">
+            <a href="{{ route('index') }}" class="logo d-flex align-items-center">
                 <img src="{{ asset('assets/img/logo.png') }}" alt="">
                 <span class="d-none d-lg-block">Workshop</span>
             </a>
@@ -103,7 +108,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="pages-error-404.html">
+                <a class="nav-link collapsed" href="{{ route('ActualPm') }}">
                     <i class="bi bi-file-earmark-check-fill"></i>
                     <span>บันทึกผลการซ่อมบำรุง (PM)</span>
                 </a>

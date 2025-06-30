@@ -19,6 +19,9 @@ class EquipmentController extends Controller
     public function equipment()
     {
         $groups = Groups::get();
+        $type = Type::get();
+        $brand = Brand::get();
+        $model = Models::get();
         $zone = Zone::get();
 
         $equipment = Equipment::query()
@@ -35,11 +38,14 @@ class EquipmentController extends Controller
                 'model.model_name',
                 'zone.zone_name'
             )
-            ->get();
+            ->paginate(10);
 
         return view('equipment.equipment', [
             'groups' => $groups,
+            'type' => $type,
+            'brand' => $brand,
             'zone' => $zone,
+            'model' => $model,
             'equipment' => $equipment
         ]);
     }
@@ -102,7 +108,55 @@ class EquipmentController extends Controller
             $schedule->hw_id = $equipment->hw_id;
             $schedule->cycle_month = $group->groups_cycle_month;
             $schedule->planned_date = now()->addMonths($group->groups_cycle_month);
+            $schedule->status = 1;
             $schedule->save();
+
+            return response()->json(['message' => 'บันทึกข้อมูลสำเร็จ'], 200);
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return response()->json([
+                    'message' => 'หมายเลขซีเรียลนี้มีอยู่แล้วในระบบ'
+                ], 400);
+            }
+
+            return response()->json([
+                'message' => 'เกิดข้อผิดพลาดในการบันทึกข้อมูล'
+            ], 500);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'เกิดข้อผิดพลาดไม่ทราบสาเหตุ'
+            ], 500);
+        }
+    }
+
+    public function frmEditEquipment(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'hw_id' => 'required|integer|exists:equipment,hw_id',
+            'hw_name' => 'required|string|max:255',
+            'hw_sn' => 'required|string|max:255',
+            'type_id' => 'required|integer|exists:type,type_id',
+            'brand_id' => 'required|integer|exists:brand,brand_id',
+            'model_id' => 'required|integer|exists:model,model_id',
+            'zone_id' => 'required|integer|exists:zone,zone_id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated();
+
+        try {
+
+            $updated = Equipment::where('hw_id', $validated['hw_id'])->update([
+                'hw_name' => $validated['hw_name'],
+                'hw_sn' => $validated['hw_sn'],
+                'type_id' => $validated['type_id'],
+                'brand_id' => $validated['brand_id'],
+                'model_id' => $validated['model_id'],
+                'zone_id' => $validated['zone_id'],
+            ]);
 
             return response()->json(['message' => 'บันทึกข้อมูลสำเร็จ'], 200);
         } catch (QueryException $e) {

@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="pagetitle">
-                    <h1>โมเดล</h1>
+                    <h4>โมเดล</h4>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('index') }}">หน้าหลัก</a></li>
@@ -132,7 +132,7 @@
 
         <div class="col-sm-12">
             <div class="pagetitle">
-                <h1><u>{{ $groups->groups_name }}</u> > <u>{{ $type->type_name }}</u> > <u>{{ $brand->brand_name }}</u></h1>
+                <h6><u>{{ $groups->groups_name }}</u> > <u>{{ $type->type_name }}</u> > <u>{{ $brand->brand_name }}</u></h6>
             </div>
         </div>
 

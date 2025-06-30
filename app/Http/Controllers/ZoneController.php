@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Zone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\QueryException;
 
 class ZoneController extends Controller
 {
@@ -25,12 +26,27 @@ class ZoneController extends Controller
         }
 
         $validated = $validator->validated();
+        try {
+            $Model = new Zone();
+            $Model->zone_name = $validated['zone_name'];
+            $Model->save();
 
-        $Model = new Zone();
-        $Model->zone_name = $validated['zone_name'];
-        $Model->save();
+            return response()->json(['message' => 'บันทึกข้อมูลสำเร็จ'], 200);
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return response()->json([
+                    'message' => 'โซนนี้มีอยู่แล้วในระบบ'
+                ], 400);
+            }
 
-        return response()->json(['message' => 'บันทึกข้อมูลสำเร็จ'], 200);
+            return response()->json([
+                'message' => 'เกิดข้อผิดพลาดในการบันทึกข้อมูล'
+            ], 500);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'เกิดข้อผิดพลาดไม่ทราบสาเหตุ'
+            ], 500);
+        }
     }
 
     public function frmEditZone(Request $request)

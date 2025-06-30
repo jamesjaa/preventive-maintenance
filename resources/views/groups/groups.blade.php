@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="pagetitle">
-                    <h1>จัดการกลุ่มอุปกรณ์</h1>
+                    <h6>จัดการกลุ่มอุปกรณ์</h6>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('index') }}">หน้าหลัก</a></li>

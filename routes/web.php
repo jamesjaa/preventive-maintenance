@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActualPmController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
@@ -62,9 +63,13 @@ Route::get('/getTypes/{groupId}', [EquipmentController::class, 'getTypes']);
 Route::get('/getBrands/{typeId}', [EquipmentController::class, 'getBrands']);
 Route::get('/getModels/{brandId}', [EquipmentController::class, 'getModels']);
 Route::post('frmAddEquipment', [EquipmentController::class, 'frmAddEquipment'])->name('frmAddEquipment');
+Route::post('frmEditEquipment', [EquipmentController::class, 'frmEditEquipment'])->name('frmEditEquipment');
 Route::post('frmDeleteHW', [EquipmentController::class, 'frmDeleteHW'])->name('frmDeleteHW');
 
 Route::get('pm-record/{id}', [PmRecordController::class, 'PmRecord'])->name('PmRecord');
 
 Route::get('maintenance-schedule', [MaintenanceScheduleController::class, 'MaintenanceSchedule'])->name('MaintenanceSchedule');
+Route::post('frmEditDate', [MaintenanceScheduleController::class, 'frmEditDate'])->name('frmEditDate');
 Route::post('frmDeletePM', [MaintenanceScheduleController::class, 'frmDeletePM'])->name('frmDeletePM');
+
+Route::get('actual-pm', [ActualPmController::class, 'ActualPm'])->name('ActualPm');

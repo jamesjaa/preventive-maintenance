@@ -1,7 +1,7 @@
 @extends('layouts.index')
 @section('content')
     <div class="pagetitle">
-        <h1>Dashboard</h1>
+        <h4>Dashboard</h4>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('index') }}">หน้าหลัก</a></li>

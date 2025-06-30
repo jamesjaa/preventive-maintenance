@@ -10,6 +10,11 @@
 # General
 --------------------------------------------------------------*/
 
+@font-face {
+  font-family: 'Prompt';
+  src: url('/fonts/sukhumvitset-text-webfont.ttf') format('truetype');
+}
+
 :root {
   scroll-behavior: smooth;
 }
@@ -61,8 +66,13 @@ h6 {
   margin-bottom: 10px;
 }
 
-.pagetitle h1 {
-  font-size: 24px;
+.pagetitle h1,
+.pagetitle h2,
+.pagetitle h3,
+.pagetitle h4,
+.pagetitle h5,
+.pagetitle h6 {
+  /* font-size: 20px; */
   margin-bottom: 0;
   font-weight: 600;
   color: #012970;

@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="pagetitle">
-                    <h1>จัดการตารางซ่อมบำรุง (PM)</h1>
+                    <h4>จัดการตารางซ่อมบำรุง (PM)</h4>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('index') }}">หน้าหลัก</a></li>
@@ -30,7 +30,7 @@
 
         <div class="col-sm-12">
             <div class="pagetitle">
-                <h1>ตารางแผนการซ่อมบำรุง</h1>
+                <h6>ตารางแผนการซ่อมบำรุง</h6>
             </div>
         </div>
 
@@ -67,7 +67,91 @@
                             <td class="text-center">{{ $mt->model_name }}</td>
                             <td>{{ $mt->hw_name }}</td>
                             <td class="text-center">{{ date('d-m-Y', strtotime($mt->planned_date)) }} </td>
-                            <td></td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#editModel{{ $i }}"><i class="bi bi-pencil"></i></button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="editModel{{ $i }}" data-bs-backdrop="static"
+                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-sm">
+                                        <div class="modal-content">
+                                            <form id="frm-edit-date{{ $i }}">
+                                                @csrf
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                                                        แก้ไข PM Plan Date
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="input-group mb-3">
+                                                        <span class="input-group-text" id="basic-addon1">ระบุวันที่</span>
+                                                        <input type="date" class="form-control" name="edit_date"
+                                                            required>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="hidden" name="pm_id" value="{{ $mt->pm_id }}">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">ยกเลิก</button>
+                                                    <button type="submit" class="btn btn-success">บันทึกข้อมูล</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    $(document).ready(function() {
+                                        $("#frm-edit-date" + <?php echo $i; ?>).submit(function(e) {
+                                            e.preventDefault();
+
+                                            var formData = $(this).serialize();
+
+                                            $.ajax({
+                                                url: "{{ route('frmEditDate') }}",
+                                                type: "POST",
+                                                data: formData,
+                                                success: function(response) {
+                                                    // console.log(response);
+
+                                                    Swal.fire({
+                                                        icon: 'success',
+                                                        title: 'แจ้งเตือน!',
+                                                        text: response.message,
+                                                        showConfirmButton: false,
+                                                        timer: 1500
+                                                    }).then(() => {
+                                                        window.location.reload();
+                                                    });
+                                                },
+                                                error: function(xhr) {
+                                                    if (xhr.status === 422) {
+                                                        let errors = xhr.responseJSON.errors;
+                                                        let errorText = '';
+                                                        $.each(errors, function(key, value) {
+                                                            errorText += value + '<br>';
+                                                        });
+
+                                                        Swal.fire({
+                                                            icon: 'error',
+                                                            title: 'ข้อมูลไม่ถูกต้อง',
+                                                            html: errorText
+                                                        });
+                                                    } else {
+                                                        Swal.fire({
+                                                            icon: 'error',
+                                                            title: 'เกิดข้อผิดพลาด',
+                                                            text: xhr.responseJSON.message
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
+                            </td>
                             <td class="text-center">
                                 <button type="button" class="btn btn-danger btn-sm delete-group-btn"
                                     data-id="{{ $mt->pm_id }}">
@@ -140,6 +224,6 @@
                 </tbody>
             </table>
         </div>
-
+        {{ $maintenance->links('pagination::bootstrap-5') }}
     </div>
 @endsection

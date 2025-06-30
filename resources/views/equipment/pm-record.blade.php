@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="pagetitle">
-                    <h1>ประวัติการซ่อมบำรุง</h1>
+                    <h4>ประวัติการซ่อมบำรุง</h4>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('index') }}">หน้าหลัก</a></li>
@@ -41,10 +41,10 @@
 
         <div class="col-sm-12">
             <div class="pagetitle">
-                <h1> อุปกรณ์ :
+                <h6> อุปกรณ์ :
                     {{ $equipment->groups_name }}/ {{ $equipment->type_name }}/ {{ $equipment->brand_name }}/
                     {{ $equipment->model_name }}/ {{ $equipment->hw_sn }}/ {{ $equipment->hw_name }}
-                </h1>
+                </h6>
             </div>
         </div>
 
