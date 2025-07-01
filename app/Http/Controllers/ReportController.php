@@ -37,6 +37,7 @@ class ReportController extends Controller
                 'maintenance_schedule.planned_date',
                 'maintenance_log.actual_date'
             );
+        $query->where('maintenance_log.status', '<=', 2);
 
         if ($request->filled('year')) {
             $query->whereYear('maintenance_log.actual_date', $request->year);
@@ -113,6 +114,7 @@ class ReportController extends Controller
                 'maintenance_schedule.planned_date',
                 'maintenance_log.actual_date'
             );
+        $query->where('maintenance_log.status', '<=', 2);
 
         if ($request->filled('year')) {
             $query->whereYear('maintenance_log.actual_date', $request->year);

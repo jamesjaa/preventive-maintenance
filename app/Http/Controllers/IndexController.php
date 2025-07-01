@@ -29,7 +29,7 @@ class IndexController extends Controller
                 'zone.zone_name'
             )
             ->whereDate('maintenance_schedule.planned_date', '<=', Carbon::today())
-            ->where('status', 1)
+            ->where('status', '>=', 1)
             ->get();
 
         $query = EqmLog::query();

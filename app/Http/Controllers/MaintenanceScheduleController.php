@@ -34,8 +34,7 @@ class MaintenanceScheduleController extends Controller
         if ($request->filled('month')) {
             $query->whereMonth('maintenance_schedule.planned_date', $request->month);
         }
-        $query->where('status', 1);
-
+        $query->where('status', '>=', 1);
         $maintenance = $query->get();
         return view('maintenance_schedule.maintenance_schedule', ['maintenance' => $maintenance]);
     }

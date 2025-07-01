@@ -141,6 +141,13 @@
                                                             ยกเลิก (ซ่อมไม่ได้)
                                                         </label>
                                                     </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="status"
+                                                            id="statusWait" value="3">
+                                                        <label class="form-check-label" for="statusWait">
+                                                            รอดำเนินการ (รออะไหล่)
+                                                        </label>
+                                                    </div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label class="form-label">รายละเอียด</label>

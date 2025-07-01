@@ -106,6 +106,7 @@
                                     <th>แบรนด์</th>
                                     <th>โมเดล</th>
                                     <th>ชื่ออุปกรณ์</th>
+                                    <th>สถานะ</th>
                                     <th>PM Plan Date</th>
                                 </tr>
                             </thead>
@@ -120,6 +121,13 @@
                                         <td class="text-center">{{ $mt->brand_name }}</td>
                                         <td class="text-center">{{ $mt->model_name }}</td>
                                         <td>{{ $mt->hw_name }}</td>
+                                        <td class="text-center">
+                                            @if ($mt->status == 1)
+                                                <span class="badge text-bg-secondary">รอดำเนินการ</span>
+                                            @else
+                                                <span class="badge text-bg-warning">รออะไหล่</span>
+                                            @endif
+                                        </td>
                                         <td class="text-center">{{ date('d-m-Y', strtotime($mt->planned_date)) }}</td>
                                     </tr>
                                 @endforeach

@@ -33,7 +33,7 @@ class ActualPmController extends Controller
                 'zone.zone_name'
             );
         $query->whereDate('maintenance_schedule.planned_date', '<=', Carbon::today());
-        $query->where('status', 1);
+        $query->where('status', '>=', 1);
         if ($request->filled('year')) {
             $query->whereYear('maintenance_schedule.planned_date', $request->year);
         }
@@ -56,7 +56,7 @@ class ActualPmController extends Controller
             'cycle_month' => 'required|integer',
             'maintenance_id' => 'required|integer',
             'actual_date' => 'required|date',
-            'status' => 'required|in:1,2',
+            'status' => 'required|in:1,2,3',
             'detail' => 'nullable|string',
             'cost' => 'nullable|integer|min:0'
         ]);
@@ -67,10 +67,19 @@ class ActualPmController extends Controller
 
         $validated = $validator->validated();
 
+        // อัปเดตสถานะแผนเก่า
         $schedule = MaintenanceSchedule::find($validated['schedule_id']);
-        $schedule->status = 0;
-        $schedule->save();
+        if ($validated['status'] == 3) {
+            // ถ้ารอดำเนินการ ให้เปลี่ยนสถานะเป็นรอดำเนินการ
+            $schedule->status = 3;
+            $schedule->save();
+        } else {
+            // ถ้าไม่ใช่รอดำเนินการ ให้เปลี่ยนสถานะเป็นเสร็จ
+            $schedule->status = 0;
+            $schedule->save();
+        }
 
+        // บันทึก log
         EqmLog::create([
             'pm_id' => $validated['schedule_id'],
             'hw_id' => $validated['hw_id'],
@@ -82,13 +91,18 @@ class ActualPmController extends Controller
             'cost' => $validated['cost'] ?? 0,
         ]);
 
-        MaintenanceSchedule::create([
-            'hw_id' => $validated['hw_id'],
-            'planned_date' => Carbon::parse($validated['actual_date'])->addMonths((int)$validated['cycle_month']),
-            'cycle_month' => $validated['cycle_month'],
-            'status' => '1',
-        ]);
+        // เฉพาะสถานะสำเร็จ/ยกเลิก ถึงสร้างแผนใหม่
+        if ($validated['status'] != 3) {
+            MaintenanceSchedule::create([
+                'hw_id' => $validated['hw_id'],
+                'planned_date' => Carbon::parse($validated['actual_date'])->addMonths((int)$validated['cycle_month']),
+                'cycle_month' => $validated['cycle_month'],
+                'status' => 1,
+            ]);
+        }
 
-        return response()->json(['message' => 'บันทึกข้อมูลเรียบร้อย และสร้างแผนใหม่แล้ว']);
+        return response()->json([
+            'message' => 'บันทึกข้อมูลเรียบร้อย' . ($validated['status'] != 3 ? ' และสร้างแผนใหม่แล้ว' : '')
+        ]);
     }
 }
