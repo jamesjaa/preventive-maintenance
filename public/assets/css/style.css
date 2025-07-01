@@ -298,7 +298,7 @@ h6 {
 
 .accordion-button:not(.collapsed) {
   color: #012970;
-  background-color: #f6f9ff;
+  background-color: #a8aebc;
 }
 
 .accordion-flush .accordion-button {
@@ -625,7 +625,7 @@ h6 {
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
   box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
-  background-color: #fff;
+  background-color: #eef1f8;
 }
 
 @media (max-width: 1199px) {
@@ -699,9 +699,9 @@ h6 {
   align-items: center;
   font-size: 15px;
   font-weight: 600;
-  color: #4154f1;
+  color: #003366;
   transition: 0.3;
-  background: #f6f9ff;
+  background: #dde6fb;
   padding: 10px 15px;
   border-radius: 4px;
 }
@@ -709,25 +709,25 @@ h6 {
 .sidebar-nav .nav-link i {
   font-size: 16px;
   margin-right: 10px;
-  color: #4154f1;
+  color: #1c3faa;
 }
 
 .sidebar-nav .nav-link.collapsed {
-  color: #012970;
-  background: #fff;
+  color: #555;
+  background: #eef1f8;
 }
 
-.sidebar-nav .nav-link.collapsed i {
+/* .sidebar-nav .nav-link.collapsed i {
   color: #899bbd;
-}
+} */
 
 .sidebar-nav .nav-link:hover {
-  color: #4154f1;
-  background: #f6f9ff;
+  color: #001f4d;
+  background: #b3c7ff;
 }
 
 .sidebar-nav .nav-link:hover i {
-  color: #4154f1;
+  color: #1c3faa;
 }
 
 .sidebar-nav .nav-link .bi-chevron-down {
@@ -736,7 +736,8 @@ h6 {
 }
 
 .sidebar-nav .nav-link:not(.collapsed) .bi-chevron-down {
-  transform: rotate(180deg);
+  background-color: #a0bbf2; /* ฟ้าโดดเด่น */
+  color: #002b80;
 }
 
 .sidebar-nav .nav-content {
@@ -765,12 +766,15 @@ h6 {
 
 .sidebar-nav .nav-content a:hover,
 .sidebar-nav .nav-content a.active {
-  color: #4154f1;
+  background-color: #a0bbf2; /* ฟ้าโดดเด่น */
+  color: #002b80;
 }
 
 .sidebar-nav .nav-content a.active i {
   background-color: #4154f1;
 }
+
+
 
 /*--------------------------------------------------------------
 # Dashboard

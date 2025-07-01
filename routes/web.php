@@ -68,11 +68,11 @@ Route::post('frmEditEquipment', [EquipmentController::class, 'frmEditEquipment']
 Route::post('frmDeleteHW', [EquipmentController::class, 'frmDeleteHW'])->name('frmDeleteHW');
 Route::post('frmAddPmNew', [EquipmentController::class, 'frmAddPmNew'])->name('frmAddPmNew');
 
-Route::get('maintenance-schedule', [MaintenanceScheduleController::class, 'MaintenanceSchedule'])->name('MaintenanceSchedule');
+Route::get('maintenanc_schedule', [MaintenanceScheduleController::class, 'MaintenanceSchedule'])->name('MaintenanceSchedule');
 Route::post('frmEditDate', [MaintenanceScheduleController::class, 'frmEditDate'])->name('frmEditDate');
 Route::post('frmDeletePM', [MaintenanceScheduleController::class, 'frmDeletePM'])->name('frmDeletePM');
 
-Route::get('actual-pm', [ActualPmController::class, 'ActualPm'])->name('ActualPm');
+Route::get('actual_pm', [ActualPmController::class, 'ActualPm'])->name('ActualPm');
 Route::post('frmAddPM', [ActualPmController::class, 'frmAddPM'])->name('frmAddPM');
 
 Route::get('report', [ReportController::class, 'report'])->name('report');

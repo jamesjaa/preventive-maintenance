@@ -85,7 +85,8 @@
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <a class="nav-link " href="{{ route('index') }}">
+                <a class="nav-link {{ in_array(Request::segment(1), ['index']) ? 'collapsed' : '' }}"
+                    href="{{ route('index') }}">
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </a>
@@ -94,54 +95,60 @@
             <li class="nav-heading">เมนู</li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('equipment') }}">
+                <a class="nav-link {{ in_array(Request::segment(1), ['equipment']) ? 'collapsed' : '' }}"
+                    href="{{ route('equipment') }}">
                     <i class="bi bi-archive"></i>
                     <span>จัดการอุปกรณ์</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('MaintenanceSchedule') }}">
+                <a class="nav-link {{ in_array(Request::segment(1), ['MaintenanceSchedule']) ? 'collapsed' : '' }}"
+                    href="{{ route('MaintenanceSchedule') }}">
                     <i class="bi bi-file-earmark-bar-graph"></i>
                     <span>จัดการตารางซ่อมบำรุง (PM)</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('ActualPm') }}">
+                <a class="nav-link {{ in_array(Request::segment(1), ['ActualPm']) ? 'collapsed' : '' }}"
+                    href="{{ route('ActualPm') }}">
                     <i class="bi bi-file-earmark-check-fill"></i>
                     <span>บันทึกผลการซ่อมบำรุง (PM)</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('report') }}">
+                <a class="nav-link {{ in_array(Request::segment(1), ['report']) ? 'collapsed' : '' }}"
+                    href="{{ route('report') }}">
                     <i class="bi bi-card-list"></i>
                     <span>รายงานการซ่อมบำรุง</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('groups') }}">
+                <a class="nav-link {{ in_array(Request::segment(1), ['groups', 'type', 'brand', 'model']) ? 'collapsed' : '' }}"
+                    href="{{ route('groups') }}">
                     <i class="bi bi-box-arrow-in-right"></i>
                     <span>จัดการกลุ่มอุปกรณ์</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('zone') }}">
+                <a class="nav-link {{ in_array(Request::segment(1), ['zone']) ? 'collapsed' : '' }}"
+                    href="{{ route('zone') }}">
                     <i class="bi bi-building-add"></i>
                     <span>จัดการโซนอุปกรณ์</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('maintenance_staff') }}">
+                <a class="nav-link {{ in_array(Request::segment(1), ['maintenance_staff']) ? 'collapsed' : '' }}"
+                    href="{{ route('maintenance_staff') }}">
                     <i class="bi bi-person-fill-gear"></i>
                     <span>จัดการข้อมูลพนักงานซ่อมบำรุง</span>
                 </a>
             </li>
-
 
         </ul>
 
