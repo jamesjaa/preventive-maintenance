@@ -18,7 +18,7 @@
             <div class="col-sm-12">
                 <form method="GET" action="{{ route('MaintenanceSchedule') }}">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-3 m-1">
                             <select class="form-select" name="year" onchange="this.form.submit()">
                                 <option value="">เลือกปี</option>
                                 @foreach (range(date('Y'), date('Y') - 5) as $y)
@@ -28,7 +28,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-3 m-1">
                             @php
                                 $thaiMonths = [
                                     1 => 'มกราคม',
