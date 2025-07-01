@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="pagetitle">
-                    <h1>จัดการข้อมูลพนักงานซ่อมบำรุง</h1>
+                    <h4>จัดการข้อมูลพนักงานซ่อมบำรุง</h4>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('index') }}">หน้าหลัก</a></li>
@@ -15,26 +15,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-8">
-                <div class="float-start">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-search">ค้นหา</span>
-                        <input type="text" class="form-control" placeholder="ค้นหาข้อมูล..." aria-label="ค้นหาข้อมูล..."
-                            id="searchInput" aria-describedby="basic-search">
-                    </div>
-                    <script>
-                        $(document).ready(function() {
-                            $("#searchInput").on("keyup", function() {
-                                var value = $(this).val().toLowerCase();
-                                $("table tbody tr").filter(function() {
-                                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-                                });
-                            });
-                        });
-                    </script>
-                </div>
-            </div>
-            <div class="col-sm-4">
+            <div class="col-sm-12">
                 <div class="float-end">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStaff"><i
                             class="bi bi-plus-lg me-2"></i>เพิ่มพนักงาน</button>
@@ -122,7 +103,7 @@
     <div class="card info-card sales-card p-4">
 
         <div class="table-responsive">
-            <table class="table table-hover" id="data-table">
+            <table class="table table-bordered datatable" id="data-table">
                 <thead>
                     <tr class="text-center">
                         <th scope="col">#</th>

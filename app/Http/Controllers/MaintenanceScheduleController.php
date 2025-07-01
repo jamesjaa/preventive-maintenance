@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Validator;
 
 class MaintenanceScheduleController extends Controller
 {
-    public function MaintenanceSchedule()
+    public function MaintenanceSchedule(Request $request)
     {
-        $maintenance = MaintenanceSchedule::query()
+        $query = MaintenanceSchedule::query()
             ->leftJoin('equipment', 'maintenance_schedule.hw_id', '=', 'equipment.hw_id')
             ->leftJoin('groups', 'equipment.groups_id', '=', 'groups.groups_id')
             ->leftJoin('type', 'equipment.type_id', '=', 'type.type_id')
@@ -26,9 +26,17 @@ class MaintenanceScheduleController extends Controller
                 'brand.brand_name',
                 'model.model_name',
                 'zone.zone_name'
-            )
-            ->where('status', 1)
-            ->paginate(10);
+            );
+        if ($request->filled('year')) {
+            $query->whereYear('maintenance_schedule.planned_date', $request->year);
+        }
+
+        if ($request->filled('month')) {
+            $query->whereMonth('maintenance_schedule.planned_date', $request->month);
+        }
+        $query->where('status', 1);
+
+        $maintenance = $query->get();
         return view('maintenance_schedule.maintenance_schedule', ['maintenance' => $maintenance]);
     }
 

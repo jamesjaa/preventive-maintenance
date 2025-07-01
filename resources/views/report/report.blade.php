@@ -59,11 +59,10 @@
             </div>
             <div class="col-sm-4">
                 <div class="float-end">
-                    <a href="{{ route('report.export.excel', request()->all()) }}" class="btn btn-success btn-sm">
+                    <a href="{{ route('report.export.excel', request()->all()) }}" class="btn btn-success">
                         <i class="bi bi-file-earmark-excel"></i> Export Excel
                     </a>
-                    <a href="{{ route('report.export.pdf', request()->all()) }}" target="_blank"
-                        class="btn btn-danger btn-sm">
+                    <a href="{{ route('report.export.pdf', request()->all()) }}" target="_blank" class="btn btn-danger">
                         <i class="bi bi-file-earmark-pdf"></i> Export PDF
                     </a>
                 </div>
@@ -78,7 +77,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover" id="data-table">
+            <table class="table table-bordered" id="data-table">
                 <thead>
                     <tr class="text-center">
                         <th>#</th>

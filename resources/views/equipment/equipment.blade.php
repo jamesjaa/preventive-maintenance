@@ -15,16 +15,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-8">
-                <div class="float-start">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-search">ค้นหา</span>
-                        <input type="text" class="form-control" placeholder="ค้นหาข้อมูล..." aria-label="ค้นหาข้อมูล..."
-                            id="searchInput" aria-describedby="basic-search">
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
+            <div class="col-sm-12">
                 <div class="float-end">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addHw"><i
                             class="bi bi-plus-lg me-2"></i>เพิ่มอุปกรณ์</button>
@@ -401,7 +392,7 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover" id="data-table">
+            <table class="table table-bordered datatable" id="data-table">
                 <thead>
                     <tr class="text-center">
                         <th scope="col">#</th>
@@ -429,7 +420,7 @@
                             <th scope="row" class="text-center">{{ $i }}</th>
                             <td class="text-center">{{ $equ->groups_name }}</td>
                             <td class="text-center">{{ $equ->type_name }}</td>
-                            <td class="searchable-column">{{ $equ->hw_sn }}</td>
+                            <td>{{ $equ->hw_sn }}</td>
                             <td class="text-center">{{ $equ->brand_name }}</td>
                             <td class="text-center">{{ $equ->model_name }}</td>
                             <td>{{ $equ->hw_name }}</td>
@@ -583,6 +574,5 @@
                 </tbody>
             </table>
         </div>
-        {{ $equipment->links('pagination::bootstrap-5') }}
     </div>
 @endsection

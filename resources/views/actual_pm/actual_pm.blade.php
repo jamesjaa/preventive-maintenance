@@ -15,24 +15,47 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-8">
-                <div class="float-start">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-search">ค้นหา</span>
-                        <input type="text" class="form-control" placeholder="ค้นหาข้อมูล..." aria-label="ค้นหาข้อมูล..."
-                            id="searchInput" aria-describedby="basic-search">
+            <div class="col-sm-12">
+                <form method="GET" action="{{ route('ActualPm') }}">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <select class="form-select" name="year" onchange="this.form.submit()">
+                                <option value="">เลือกปี</option>
+                                @foreach (range(date('Y'), date('Y') - 5) as $y)
+                                    <option value="{{ $y }}" {{ request('year') == $y ? 'selected' : '' }}>
+                                        {{ $y }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            @php
+                                $thaiMonths = [
+                                    1 => 'มกราคม',
+                                    2 => 'กุมภาพันธ์',
+                                    3 => 'มีนาคม',
+                                    4 => 'เมษายน',
+                                    5 => 'พฤษภาคม',
+                                    6 => 'มิถุนายน',
+                                    7 => 'กรกฎาคม',
+                                    8 => 'สิงหาคม',
+                                    9 => 'กันยายน',
+                                    10 => 'ตุลาคม',
+                                    11 => 'พฤศจิกายน',
+                                    12 => 'ธันวาคม',
+                                ];
+                            @endphp
+                            <select class="form-select" name="month" onchange="this.form.submit()">
+                                <option value="">เลือกเดือน</option>
+                                @foreach ($thaiMonths as $m => $monthName)
+                                    <option value="{{ $m }}" {{ request('month') == $m ? 'selected' : '' }}>
+                                        {{ $monthName }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    <script>
-                        $(document).ready(function() {
-                            $("#searchInput").on("keyup", function() {
-                                var value = $(this).val().toLowerCase();
-                                $("table tbody tr").filter(function() {
-                                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-                                });
-                            });
-                        });
-                    </script>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -45,7 +68,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover" id="data-table">
+            <table class="table table-bordered datatable" id="data-table">
                 <thead>
                     <tr class="text-center">
                         <th scope="col">#</th>
@@ -156,7 +179,7 @@
                 </tbody>
             </table>
         </div>
-        {{ $maintenance->links('pagination::bootstrap-5') }}
+
     </div>
 
     <script>

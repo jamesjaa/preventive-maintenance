@@ -38,7 +38,7 @@ class EquipmentController extends Controller
                 'model.model_name',
                 'zone.zone_name'
             )
-            ->paginate(10);
+            ->get();
 
         return view('equipment.equipment', [
             'groups' => $groups,

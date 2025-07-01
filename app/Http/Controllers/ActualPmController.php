@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Session;
 
 class ActualPmController extends Controller
 {
-    public function ActualPm()
+    public function ActualPm(Request $request)
     {
-        $maintenance = MaintenanceSchedule::query()
+        $query = MaintenanceSchedule::query()
             ->leftJoin('equipment', 'maintenance_schedule.hw_id', '=', 'equipment.hw_id')
             ->leftJoin('groups', 'equipment.groups_id', '=', 'groups.groups_id')
             ->leftJoin('type', 'equipment.type_id', '=', 'type.type_id')
@@ -31,10 +31,17 @@ class ActualPmController extends Controller
                 'brand.brand_name',
                 'model.model_name',
                 'zone.zone_name'
-            )
-            ->whereDate('maintenance_schedule.planned_date', '<=', Carbon::today())
-            ->where('status', 1)
-            ->paginate(10);
+            );
+        $query->whereDate('maintenance_schedule.planned_date', '<=', Carbon::today());
+        $query->where('status', 1);
+        if ($request->filled('year')) {
+            $query->whereYear('maintenance_schedule.planned_date', $request->year);
+        }
+
+        if ($request->filled('month')) {
+            $query->whereMonth('maintenance_schedule.planned_date', $request->month);
+        }
+        $maintenance = $query->get();
 
         $staff = Staff::get();
 
