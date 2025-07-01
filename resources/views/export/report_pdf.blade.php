@@ -66,6 +66,11 @@
                     <td>{{ number_format($log->cost, 2) }}</td>
                 </tr>
             @endforeach
+            @php $totalCost = $logs->sum('cost'); @endphp
+            <tr>
+                <td colspan="9"><b>ค่าใช้จ่ายรวม</b></td>
+                <td>{{ number_format($totalCost, 2) }}</td>
+            </tr>
         </tbody>
     </table>
 </body>

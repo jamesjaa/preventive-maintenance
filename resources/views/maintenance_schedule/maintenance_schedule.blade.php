@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-8">
                 <form method="GET" action="{{ route('MaintenanceSchedule') }}">
                     <div class="row">
                         <div class="col-sm-3 p-1">
@@ -56,6 +56,17 @@
                         </div>
                     </div>
                 </form>
+            </div>
+            <div class="col-sm-4">
+                <div class="float-end">
+                    <a href="{{ route('maintenance.export.excel', request()->all()) }}" class="btn btn-success">
+                        <i class="bi bi-file-earmark-excel"></i> Export Excel
+                    </a>
+                    <a href="{{ route('maintenance.export.pdf', request()->all()) }}" target="_blank"
+                        class="btn btn-danger">
+                        <i class="bi bi-file-earmark-pdf"></i> Export PDF
+                    </a>
+                </div>
             </div>
         </div>
     </div>

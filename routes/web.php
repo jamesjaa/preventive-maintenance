@@ -71,6 +71,8 @@ Route::post('frmAddPmNew', [EquipmentController::class, 'frmAddPmNew'])->name('f
 Route::get('maintenanc_schedule', [MaintenanceScheduleController::class, 'MaintenanceSchedule'])->name('MaintenanceSchedule');
 Route::post('frmEditDate', [MaintenanceScheduleController::class, 'frmEditDate'])->name('frmEditDate');
 Route::post('frmDeletePM', [MaintenanceScheduleController::class, 'frmDeletePM'])->name('frmDeletePM');
+Route::get('/MaintenanceSchedule/export/excel', [MaintenanceScheduleController::class, 'exportExcel'])->name('maintenance.export.excel');
+Route::get('/MaintenanceSchedule/export/pdf', [MaintenanceScheduleController::class, 'exportPdf'])->name('maintenance.export.pdf');
 
 Route::get('actual_pm', [ActualPmController::class, 'ActualPm'])->name('ActualPm');
 Route::post('frmAddPM', [ActualPmController::class, 'frmAddPM'])->name('frmAddPM');
