@@ -108,7 +108,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ in_array(Request::segment(1), ['MaintenanceSchedule']) ? 'collapsed' : '' }}"
+                <a class="nav-link {{ in_array(Request::segment(1), ['maintenanc_schedule']) ? 'collapsed' : '' }}"
                     href="{{ route('MaintenanceSchedule') }}">
                     <i class="bi bi-file-earmark-bar-graph"></i>
                     <span>จัดการตารางซ่อมบำรุง (PM)</span>
@@ -116,7 +116,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ in_array(Request::segment(1), ['ActualPm']) ? 'collapsed' : '' }}"
+                <a class="nav-link {{ in_array(Request::segment(1), ['actual_pm']) ? 'collapsed' : '' }}"
                     href="{{ route('ActualPm') }}">
                     <i class="bi bi-file-earmark-check-fill"></i>
                     <span>บันทึกผลการซ่อมบำรุง (PM)</span>
