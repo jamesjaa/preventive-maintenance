@@ -145,23 +145,92 @@
                                         </div>
                                     </div>
                                 </div>
-                                <script>
-                                    $(document).ready(function() {
-                                        $("#frm-edit-date" + <?php echo $i; ?>).submit(function(e) {
-                                            e.preventDefault();
+                            </td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-danger btn-sm delete-group-btn"
+                                    data-id="{{ $mt->pm_id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <script>
+                            $(document).ready(function() {
+                                $("#frm-edit-date" + <?php echo $i; ?>).submit(function(e) {
+                                    e.preventDefault();
 
-                                            var formData = $(this).serialize();
+                                    var formData = $(this).serialize();
 
+                                    $.ajax({
+                                        url: "{{ route('frmEditDate') }}",
+                                        type: "POST",
+                                        data: formData,
+                                        success: function(response) {
+                                            // console.log(response);
+
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'แจ้งเตือน!',
+                                                text: response.message,
+                                                showConfirmButton: false,
+                                                timer: 1500
+                                            }).then(() => {
+                                                window.location.reload();
+                                            });
+                                        },
+                                        error: function(xhr) {
+                                            if (xhr.status === 422) {
+                                                let errors = xhr.responseJSON.errors;
+                                                let errorText = '';
+                                                $.each(errors, function(key, value) {
+                                                    errorText += value + '<br>';
+                                                });
+
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'ข้อมูลไม่ถูกต้อง',
+                                                    html: errorText
+                                                });
+                                            } else {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'เกิดข้อผิดพลาด',
+                                                    text: xhr.responseJSON.message
+                                                });
+                                            }
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                        <script>
+                            $(document).ready(function() {
+                                $('.delete-group-btn').on('click', function() {
+                                    var pmId = $(this).data('id');
+
+                                    Swal.fire({
+                                        title: 'คุณแน่ใจหรือไม่?',
+                                        text: "คุณต้องการลบข้อมูลนี้จริงหรือ?",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#dc3545',
+                                        cancelButtonColor: '#6c757d',
+                                        confirmButtonText: 'ใช่, ลบเลย!',
+                                        cancelButtonText: 'ยกเลิก'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
                                             $.ajax({
-                                                url: "{{ route('frmEditDate') }}",
+                                                url: "{{ route('frmDeletePM') }}",
                                                 type: "POST",
-                                                data: formData,
+                                                data: {
+                                                    _token: "{{ csrf_token() }}",
+                                                    pm_id: pmId
+                                                },
                                                 success: function(response) {
                                                     // console.log(response);
 
                                                     Swal.fire({
                                                         icon: 'success',
-                                                        title: 'แจ้งเตือน!',
+                                                        title: 'ลบข้อมูลสำเร็จ!',
                                                         text: response.message,
                                                         showConfirmButton: false,
                                                         timer: 1500
@@ -170,99 +239,30 @@
                                                     });
                                                 },
                                                 error: function(xhr) {
-                                                    if (xhr.status === 422) {
-                                                        let errors = xhr.responseJSON.errors;
-                                                        let errorText = '';
-                                                        $.each(errors, function(key, value) {
-                                                            errorText += value + '<br>';
-                                                        });
+                                                    let errorText = 'ไม่สามารถลบข้อมูลได้';
 
-                                                        Swal.fire({
-                                                            icon: 'error',
-                                                            title: 'ข้อมูลไม่ถูกต้อง',
-                                                            html: errorText
-                                                        });
-                                                    } else {
-                                                        Swal.fire({
-                                                            icon: 'error',
-                                                            title: 'เกิดข้อผิดพลาด',
-                                                            text: xhr.responseJSON.message
-                                                        });
+                                                    if (xhr.responseText && xhr.responseText.includes(
+                                                            'Integrity constraint violation')) {
+                                                        errorText =
+                                                            'ข้อมูลนี้กำลังถูกใช้งานอยู่ ไม่สามารถลบได้';
+                                                    } else if (xhr.responseJSON && xhr.responseJSON
+                                                        .message) {
+                                                        errorText = xhr.responseJSON.message;
                                                     }
-                                                }
-                                            });
-                                        });
-                                    });
-                                </script>
-                            </td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-danger btn-sm delete-group-btn"
-                                    data-id="{{ $mt->pm_id }}">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                                <script>
-                                    $(document).ready(function() {
-                                        $('.delete-group-btn').on('click', function() {
-                                            var pmId = $(this).data('id');
 
-                                            Swal.fire({
-                                                title: 'คุณแน่ใจหรือไม่?',
-                                                text: "คุณต้องการลบข้อมูลนี้จริงหรือ?",
-                                                icon: 'warning',
-                                                showCancelButton: true,
-                                                confirmButtonColor: '#dc3545',
-                                                cancelButtonColor: '#6c757d',
-                                                confirmButtonText: 'ใช่, ลบเลย!',
-                                                cancelButtonText: 'ยกเลิก'
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    $.ajax({
-                                                        url: "{{ route('frmDeletePM') }}",
-                                                        type: "POST",
-                                                        data: {
-                                                            _token: "{{ csrf_token() }}",
-                                                            pm_id: pmId
-                                                        },
-                                                        success: function(response) {
-                                                            // console.log(response);
-
-                                                            Swal.fire({
-                                                                icon: 'success',
-                                                                title: 'ลบข้อมูลสำเร็จ!',
-                                                                text: response.message,
-                                                                showConfirmButton: false,
-                                                                timer: 1500
-                                                            }).then(() => {
-                                                                window.location.reload();
-                                                            });
-                                                        },
-                                                        error: function(xhr) {
-                                                            let errorText = 'ไม่สามารถลบข้อมูลได้';
-
-                                                            if (xhr.responseText && xhr.responseText.includes(
-                                                                    'Integrity constraint violation')) {
-                                                                errorText =
-                                                                    'ข้อมูลนี้กำลังถูกใช้งานอยู่ ไม่สามารถลบได้';
-                                                            } else if (xhr.responseJSON && xhr.responseJSON
-                                                                .message) {
-                                                                errorText = xhr.responseJSON.message;
-                                                            }
-
-                                                            Swal.fire({
-                                                                icon: 'error',
-                                                                title: 'เกิดข้อผิดพลาด!',
-                                                                text: errorText,
-                                                                showConfirmButton: true
-                                                            });
-                                                        }
+                                                    Swal.fire({
+                                                        icon: 'error',
+                                                        title: 'เกิดข้อผิดพลาด!',
+                                                        text: errorText,
+                                                        showConfirmButton: true
                                                     });
                                                 }
                                             });
-                                        });
+                                        }
                                     });
-                                </script>
-                            </td>
-                        </tr>
+                                });
+                            });
+                        </script>
                     @endforeach
                 </tbody>
             </table>
