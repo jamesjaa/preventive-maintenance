@@ -38,6 +38,7 @@ class MaintenanceScheduleController extends Controller
             $query->whereMonth('maintenance_schedule.planned_date', $request->month);
         }
         $query->where('status', '>=', 1);
+        $query->orderBy('maintenance_schedule.planned_date', 'asc');
         $maintenance = $query->get();
         return view('maintenance_schedule.maintenance_schedule', ['maintenance' => $maintenance]);
     }
