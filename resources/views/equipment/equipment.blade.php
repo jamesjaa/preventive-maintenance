@@ -403,6 +403,7 @@
                         <th scope="col">โมเดล</th>
                         <th scope="col">ชื่อของอุปกรณ์</th>
                         <th scope="col">โซน</th>
+                        <th scope="col">ประวัติ</th>
                         <th scope="col">PM</th>
                         <th scope="col">แก้ไข</th>
                         <th scope="col">ลบ</th>
@@ -425,6 +426,12 @@
                             <td class="text-center">{{ $equ->model_name }}</td>
                             <td>{{ $equ->hw_name }}</td>
                             <td class="text-center">{{ $equ->zone_name }}</td>
+                            <td class="text-center">
+                                <a type="button" class="btn btn-success btn-sm"
+                                    href="{{ route('equ_pm_list', ['id' => $equ->hw_id]) }}">
+                                    <i class="bi bi-card-checklist"></i>
+                                </a>
+                            </td>
                             <td class="text-center">
                                 <a type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#addPmNew{{ $i }}">

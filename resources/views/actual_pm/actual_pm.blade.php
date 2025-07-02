@@ -98,7 +98,7 @@
                             <td class="text-center">{{ $mt->brand_name }}</td>
                             <td class="text-center">{{ $mt->model_name }}</td>
                             <td>{{ $mt->hw_name }}</td>
-                            <td class="text-center">{{ date('d-m-Y', strtotime($mt->planned_date)) }} </td>
+                            <td class="text-center">{{ date('d/m/Y', strtotime($mt->planned_date)) }} </td>
                             <td class="text-center">
                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#addDetailPm">

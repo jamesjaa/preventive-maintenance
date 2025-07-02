@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+use App\Models\EqmLog;
 use App\Models\Groups;
 use App\Models\Models;
 use App\Models\Type;
@@ -13,6 +14,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\QueryException;
+use App\Exports\EquipmentPMHistoryExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Mpdf\Mpdf;
 
 class EquipmentController extends Controller
 {
@@ -217,5 +221,98 @@ class EquipmentController extends Controller
         $schedule->save();
 
         return response()->json(['message' => 'บันทึกข้อมูลสำเร็จ'], 200);
+    }
+
+    public function equ_pm_list(Request $request, $id)
+    {
+        $equipment = Equipment::query()
+            ->leftJoin('groups', 'equipment.groups_id', '=', 'groups.groups_id')
+            ->leftJoin('type', 'equipment.type_id', '=', 'type.type_id')
+            ->leftJoin('brand', 'equipment.brand_id', '=', 'brand.brand_id')
+            ->leftJoin('model', 'equipment.model_id', '=', 'model.model_id')
+            ->leftJoin('zone', 'equipment.zone_id', '=', 'zone.zone_id')
+            ->select(
+                'equipment.*',
+                'groups.groups_name',
+                'type.type_name',
+                'brand.brand_name',
+                'model.model_name',
+                'zone.zone_name'
+            )
+            ->where('hw_id', $id)
+            ->first();
+
+        $logs = EqmLog::where('hw_id', $id)
+            ->leftJoin('maintenance_staff', 'maintenance_log.maintenance_id', '=', 'maintenance_staff.maintenance_id')
+            ->where('status', '<=', 2)
+            ->when($request->filled('start_date'), function ($q) use ($request) {
+                $q->whereDate('actual_date', '>=', $request->start_date);
+            })
+            ->when($request->filled('end_date'), function ($q) use ($request) {
+                $q->whereDate('actual_date', '<=', $request->end_date);
+            })
+            ->select('maintenance_log.*', 'maintenance_staff.maintenance_name')
+            ->orderBy('actual_date', 'asc')
+            ->get();
+
+        return  view('equipment.equ_pm_list', ['equipment' => $equipment, 'logs' => $logs]);
+    }
+
+    public function exportExcel(Request $request, $id)
+    {
+        $logs = EqmLog::where('hw_id', $id)
+            ->leftJoin('maintenance_staff', 'maintenance_log.maintenance_id', '=', 'maintenance_staff.maintenance_id')
+            ->where('status', '<=', 2)
+            ->when($request->filled('start_date'), function ($q) use ($request) {
+                $q->whereDate('actual_date', '>=', $request->start_date);
+            })
+            ->when($request->filled('end_date'), function ($q) use ($request) {
+                $q->whereDate('actual_date', '<=', $request->end_date);
+            })
+            ->select('maintenance_log.*', 'maintenance_staff.maintenance_name')
+            ->orderBy('actual_date', 'asc')
+            ->get();
+
+        return Excel::download(new EquipmentPMHistoryExport($logs), 'equipment_pm_history.xlsx');
+    }
+
+    public function exportPdf(Request $request, $id)
+    {
+        $logs = EqmLog::where('hw_id', $id)
+            ->leftJoin('maintenance_staff', 'maintenance_log.maintenance_id', '=', 'maintenance_staff.maintenance_id')
+            ->where('status', '<=', 2)
+            ->when($request->filled('start_date'), function ($q) use ($request) {
+                $q->whereDate('actual_date', '>=', $request->start_date);
+            })
+            ->when($request->filled('end_date'), function ($q) use ($request) {
+                $q->whereDate('actual_date', '<=', $request->end_date);
+            })
+            ->select('maintenance_log.*', 'maintenance_staff.maintenance_name')
+            ->orderBy('actual_date', 'asc')
+            ->get();
+
+        $equipment = Equipment::find($id);
+
+        $html = view('export.equipment_pm_history_pdf', compact('logs', 'equipment'))->render();
+
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'default_font' => 'thsarabun',
+            'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
+                storage_path('fonts'),
+            ]),
+            'fontdata' => array_merge((new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'], [
+                'thsarabun' => [
+                    'R' => 'thsarabunnew.ttf',
+                    'B' => 'thsarabunnew_bold.ttf',
+                ]
+            ]),
+        ]);
+
+        $mpdf->WriteHTML($html);
+        return response($mpdf->Output('', 'S'))
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="equipment_pm_history.pdf"');
     }
 }

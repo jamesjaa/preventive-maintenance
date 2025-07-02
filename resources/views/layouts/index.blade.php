@@ -100,7 +100,7 @@
             <li class="nav-heading">เมนู</li>
 
             <li class="nav-item">
-                <a class="nav-link {{ in_array(Request::segment(1), ['equipment']) ? 'collapsed' : '' }}"
+                <a class="nav-link {{ in_array(Request::segment(1), ['equipment', 'equ_pm_list']) ? 'collapsed' : '' }}"
                     href="{{ route('equipment') }}">
                     <i class="bi bi-archive"></i>
                     <span>จัดการอุปกรณ์</span>

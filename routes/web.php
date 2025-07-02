@@ -67,6 +67,9 @@ Route::post('frmAddEquipment', [EquipmentController::class, 'frmAddEquipment'])-
 Route::post('frmEditEquipment', [EquipmentController::class, 'frmEditEquipment'])->name('frmEditEquipment');
 Route::post('frmDeleteHW', [EquipmentController::class, 'frmDeleteHW'])->name('frmDeleteHW');
 Route::post('frmAddPmNew', [EquipmentController::class, 'frmAddPmNew'])->name('frmAddPmNew');
+Route::get('/equ_pm_list/{id}', [EquipmentController::class, 'equ_pm_list'])->name('equ_pm_list');
+Route::get('/equipment/{id}/export/excel', [EquipmentController::class, 'exportExcel'])->name('equipment.export.excel');
+Route::get('/equipment/{id}/export/pdf', [EquipmentController::class, 'exportPdf'])->name('equipment.export.pdf');
 
 Route::get('maintenanc_schedule', [MaintenanceScheduleController::class, 'MaintenanceSchedule'])->name('MaintenanceSchedule');
 Route::post('frmEditDate', [MaintenanceScheduleController::class, 'frmEditDate'])->name('frmEditDate');
