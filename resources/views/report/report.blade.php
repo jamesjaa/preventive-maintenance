@@ -112,8 +112,10 @@
             </table>
         </div>
         @php $totalCost = $logs->sum('cost'); @endphp
-        <div class="mt-3">
-            <h6>ค่าใช้จ่ายรวม: <strong>{{ number_format($totalCost, 2) }} บาท</strong></h6>
+        <div class="col-sm-12">
+            <div class="float-end">
+                <h6>ค่าใช้จ่ายรวม: <strong>{{ number_format($totalCost, 2) }} บาท</strong></h6>
+            </div>
         </div>
     </div>
 @endsection

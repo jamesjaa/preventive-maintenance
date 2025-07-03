@@ -99,7 +99,8 @@ return [
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
-            'host' => env('DB_HOST', 'JAMES'),
+            // 'host' => env('DB_HOST', 'JAMES'),
+            'host' => env('DB_HOST', 'DESKTOP-Q187OMS'),
             'database' => env('DB_DATABASE', 'workshop'),
             'username' => '',
             'password' => '',
