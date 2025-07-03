@@ -111,7 +111,7 @@ class EquipmentController extends Controller
             $schedule = new MaintenanceSchedule();
             $schedule->hw_id = $equipment->hw_id;
             $schedule->cycle_month = $group->groups_cycle_month;
-            $schedule->planned_date = now()->addMonths($group->groups_cycle_month);
+            $schedule->planned_date = now()->addMonths((int)$group->groups_cycle_month);
             $schedule->status = 1;
             $schedule->save();
 

@@ -6,15 +6,17 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    public $timestamps = false; // ไม่มี created_at/updated_at
-
+    protected $connection = 'sqlsrv';
     protected $table = 'users'; // ตาราง users
     protected $primaryKey = 'id';
     protected $fillable = [
         'name',
         'fullname',
         'password',
+        'created_date',
     ];
+    const CREATED_AT = 'created_date';
+    const UPDATED_AT = null;
 
     protected $hidden = [
         'password',

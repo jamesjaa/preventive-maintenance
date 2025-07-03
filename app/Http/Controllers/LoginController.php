@@ -38,6 +38,7 @@ class LoginController extends Controller
             return response()->json(['message' => "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"], 401);
         }
     }
+
     public function logout()
     {
         Session::flush();
